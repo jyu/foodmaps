@@ -84,7 +84,7 @@ html, body {
   margin-left: 12px;
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
-  width: 370px;
+  width: 362px;
 }
 
 #pac-input:focus {
@@ -100,4 +100,18 @@ html, body {
 }
 #target {
   width: 345px;
+}
+
+.controls {
+  margin-left: 12px;
+}
+
+.info {
+  margin-top: 5px;
+  margin-left: 12px;
+}
+
+.info-title {
+  font-weight: bold;
+  text-decoration: underline;
 }

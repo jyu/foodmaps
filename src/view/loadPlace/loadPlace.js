@@ -1,11 +1,3 @@
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
-
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
 function initAutocomplete() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.0201613, lng: -118.2437},
@@ -40,41 +32,46 @@ function initAutocomplete() {
 
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      if (!place.geometry) {
-        console.log("Returned place contains no geometry");
-        return;
-      }
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
-      console.log(place.formatted_address)
-      console.log(place.formatted_phone_number)
-      console.log(place.name)
-      console.log(place.rating)
-      console.log(place.url)
-      var input = document.getElementById('video-input');
-      console.log(input.value)
 
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      }));
+    var place = places[0];
 
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
+    if (!place.geometry) {
+      console.log("Returned place contains no geometry");
+      return;
+    }
+    var icon = {
+      url: place.icon,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25)
+    };
+    document.getElementById('address-info').innerHTML = place.formatted_address;
+    document.getElementById('name-info').innerHTML = place.name;
+    document.getElementById('rating-info').innerHTML = place.rating;
+    document.getElementById('phone-info').innerHTML = place.formatted_phone_number;
+    document.getElementById('url-info').innerHTML = place.url;
+    document.getElementById('latitude-info').innerHTML = place.geometry.location.lat();
+    document.getElementById('longitude-info').innerHTML = place.geometry.location.lng();
+
+    var video = document.getElementById('video-input').value;
+    console.log(video);
+
+    // Create a marker for each place.
+    markers.push(new google.maps.Marker({
+      map: map,
+      icon: icon,
+      title: place.name,
+      position: place.geometry.location
+    }));
+
+    if (place.geometry.viewport) {
+      // Only geocodes have viewport.
+      bounds.union(place.geometry.viewport);
+    } else {
+      bounds.extend(place.geometry.location);
+    }
+
     map.fitBounds(bounds);
   });
 }

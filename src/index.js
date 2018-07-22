@@ -36,9 +36,26 @@ function handleError(res, reason, message, code) {
     res.status(code || 500).json({"error": message});
 }
 
-app.post('/analyze', function(req, res) {
+app.post('/loadPlace', function(req, res) {
+  var place = new Object();
+  // From google maps
+  place.name = req.body.name;
+  place.address = req.body.address;
+  place.phone_number = req.body.phoneNumber;
+  place.rating = req.body.rating;
+  place.url = req.body.url;
+  place.longitude = req.body.longitude;
+  place.latitude = req.body.latitude;
+  // From user input
+  place.video_url = req.body.video_url;
+  place.series_name = req.body.series_name;
+  place.price = req.body.price;
 
-  var access_token = req.body.access;
-  var songidList = req.body.songids;
-  var names = req.body.names;
+  db.collection("places").insertOne(place, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to create new mapping.");
+    } else {
+      res.status(200).json(doc.ops[0]);
+    }
+  });
 });
