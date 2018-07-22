@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="../css/site.css">
+    <link rel="stylesheet" href="../css/load-place.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
     <title>Food Maps TV</title>
 </head>
@@ -13,20 +13,14 @@
       <h1> Welcome to Food Maps TV! </h1>
       <p> Click on one of the markers to watch the food video about it! </p>
     </div>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
-    <p id="search-result"> this is a serach result </p>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <input id="video-input" class="controls" type="text" placeholder="Video URL">
+    <input id="price-input" class="controls" type="text" placeholder="Price">
+    <input id="series-input" class="controls" type="text" placeholder="Series Name">
   </div>
   <div id="map"></div>
   <script src="/loadPlace/loadPlace.js"></script>
 </body>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe4gbU4ytd3ZU1qSUCMlaSagf2conmsBg&callback=initMap">
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe4gbU4ytd3ZU1qSUCMlaSagf2conmsBg&libraries=places&callback=initAutocomplete">
 </script>
 </html>

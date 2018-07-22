@@ -24,7 +24,7 @@ mongodb.MongoClient.connect(MONGO_URI, function (err, database) {
     console.log("Database connection ready");
 
     // Initialize the app.
-    var server = app.listen(process.env.PORT || 3000, function () {
+    var server = app.listen(process.env.PORT || 8000, function () {
         var port = server.address().port;
     console.log("App now running on port", port);
     });
@@ -35,3 +35,10 @@ function handleError(res, reason, message, code) {
     console.log("ERROR: " + reason);
     res.status(code || 500).json({"error": message});
 }
+
+app.post('/analyze', function(req, res) {
+
+  var access_token = req.body.access;
+  var songidList = req.body.songids;
+  var names = req.body.names;
+});
