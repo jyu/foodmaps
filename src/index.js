@@ -62,9 +62,23 @@ app.post('/loadPlace', function(req, res) {
 
   db.collection("places").insertOne(place, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to create new mapping.");
+      handleError(res, err.message, "Failed to create new place.");
     } else {
       res.status(200).json({"success": 1});
+    }
+  });
+});
+
+app.get('/getPlaces', function(req, res) {
+  // TODO: handle geospatial return of places
+  db.collection("places").find({}, async function(err, docs_cursor) {
+    if (err) {
+      handleError(res, err.message, "Failed to create new mapping.");
+    } else {
+      var docs = docs_cursor.toArray();
+      docs = await docs;
+      console.log(docs)
+      res.status(200).json({"places": docs});
     }
   });
 });
