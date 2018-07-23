@@ -17,7 +17,7 @@
     <input id="video-input" class="controls" type="text" placeholder="Video URL">
     <input id="price-input" class="controls" type="text" placeholder="Price">
     <input id="series-input" class="controls" type="text" placeholder="Series Name">
-    <input id="notes-input" class="controls" type="text" placeholder="Tags">
+    <input id="tags-input" class="controls" type="text" placeholder="Tags">
     <div class="info info-title"> Name </div>
     <div id="name-info" class="info"></div>
     <div class="info info-title"> Phone </div>
@@ -32,10 +32,13 @@
     <div id="latitude-info" class="info"></div>
     <div class="info info-title"> Longitude </div>
     <div id="longitude-info" class="info"></div>
+    <button id="submit-button" class="btn btn-primary" type="submit">Submit</button>
+    <div id="added"></div>
   </div>
   <div id="map"></div>
   <script src="/loadPlace/loadPlace.js"></script>
 </body>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCe4gbU4ytd3ZU1qSUCMlaSagf2conmsBg&libraries=places&callback=initAutocomplete">
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </html>
