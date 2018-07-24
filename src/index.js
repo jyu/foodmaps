@@ -49,7 +49,7 @@ app.post('/loadPlace', function(req, res) {
   // From google maps
   place.name = req.body.name;
   place.address = req.body.address;
-  place.phone_number = req.body.phoneNumber;
+  place.phone_number = req.body.phone;
   place.rating = req.body.rating;
   place.url = req.body.url;
   place.longitude = req.body.longitude;
@@ -77,7 +77,6 @@ app.get('/getPlaces', function(req, res) {
     } else {
       var docs = docs_cursor.toArray();
       docs = await docs;
-      console.log(docs)
       res.status(200).json({"places": docs});
     }
   });
