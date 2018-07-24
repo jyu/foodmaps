@@ -10,7 +10,40 @@ function initMap() {
       center: {lat: 34.0201613, lng: -118.2437},
       zoom: 11,
     });
-    var windows = data['places'].map(place => renderPlace(place, map));
+    var places = data['places'];
+    var windows = [];
+    var markers = [];
+    var card_ids = [];
+    for (var i = 0; i < places.length; i++) {
+      var place = places[i];
+      var info_window = renderPlace(place, map, i+1);
+      windows.push(info_window[0]);
+      markers.push(info_window[1]);
+      card_ids.push(renderSearchCard(place, i))
+    }
+    card_ids.map((card_id, id) => {
+      var card = document.getElementById(card_id);
+      card.addEventListener("click", function(){
+        var info_window = windows[id];
+        var marker = markers[id];
+        info_window.open(map, marker);
+        map.setZoom(14);
+        map.setCenter(marker.getPosition());
+        card_ids.map((card_id) => {
+          console.log('check')
+          var card = document.getElementById(card_id);
+          if (card.classList.contains('bg-primary')) {
+            console.log('found')
+            card.classList.remove('bg-primary');
+            card.classList.add('bg-secondary');
+          }
+        })
+        var card = document.getElementById('search-result-' + id);
+        card.classList.remove('bg-secondary');
+        card.classList.add('bg-primary');
+      });
+    })
+
     map.addListener('click', function() {
       for (var i = 0; i < windows.length; i++) {
         windows[i].close(map);
@@ -19,17 +52,17 @@ function initMap() {
   });
 }
 
-function renderPlace(place, map) {
+function renderPlace(place, map, id) {
+  // Add info window
   var location = {lat: parseFloat(place['latitude']), lng: parseFloat(place['longitude'])};
   var contentString = getInfoWindowContent(place);
   var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
-
   var marker = new google.maps.Marker({
     position: location,
     map: map,
-    title: place['name']
+    label: String(id)
   });
 
   marker.addListener('click', function() {
@@ -38,13 +71,12 @@ function renderPlace(place, map) {
     map.setCenter(marker.getPosition());
   });
 
-  return infowindow;
+  return [infowindow, marker];
 }
 
 function getInfoWindowContent(place) {
   video_url = place['video_url'].replace("https://youtu.be/", "https://www.youtube.com/embed/");
   video_url = video_url.replace("t=", "start=");
-  console.log(video_url)
   return '<div class="card">'
         +
         '  <iframe width="560" height="315" src="' + video_url + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
@@ -55,9 +87,30 @@ function getInfoWindowContent(place) {
         +
         '    <p class="card-text">' + place['tags'] + '</p>'
         +
-        '    <a href="' + place['url'] + '" class="site-button btn btn-primary" style="float: right; margin-top: -50px">Website</a>'
+        '    <a href="' + place['url'] + '" class="site-button btn btn-primary" style="float: right; margin-top: -50px">More Info</a>'
         +
         '  </div>'
         +
         '</div';
+}
+
+function renderSearchCard(place, id) {
+  var div_id = 'search-result-' + id;
+  var disp_id = id + 1;
+  var card = '<div id="' + div_id + '" class="search-result card text-white bg-secondary mb-3">'
+    +
+    '      <div class="card-body">'
+    +
+    '        <h5 class="card-title">' + disp_id + '. ' + place['name'] + '</h5>'
+    +
+    '        <p class="card-text">Featured on ' + place['series_name'] + ', Price: ' + place['price'] + '</p>'
+    +
+    '        <p class="card-text">' + place['tags'] +'</p>'
+    +
+    '      </div>'
+    +
+    '    </div';
+    // TODO: use append node instead of innerhtml hacking
+  document.getElementById('search-result-list').innerHTML = document.getElementById('search-result-list').innerHTML + " " + card;
+  return div_id;
 }

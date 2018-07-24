@@ -56,6 +56,7 @@ app.post('/loadPlace', function(req, res) {
   place.latitude = req.body.latitude;
   // From user input
   place.video_url = req.body.video_url;
+
   place.series_name = req.body.series_name;
   place.price = req.body.price;
   place.tags = req.body.tags;
