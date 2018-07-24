@@ -13,27 +13,24 @@ function initMap() {
     var places = data['places'];
     var windows = [];
     var markers = [];
-    var card_ids = [];
+    var cards = [];
     for (var i = 0; i < places.length; i++) {
       var place = places[i];
-      var info_window = renderPlace(place, map, i+1);
-      windows.push(info_window[0]);
-      markers.push(info_window[1]);
-      card_ids.push(renderSearchCard(place, i))
+      var info_window_and_marker = renderPlace(place, map, i+1);
+      windows.push(info_window_and_marker[0]);
+      markers.push(info_window_and_marker[1]);
+      cards.push(renderSearchCard(place, i))
     }
-    card_ids.map((card_id, id) => {
-      var card = document.getElementById(card_id);
+    cards.map((card, id) => {
       card.addEventListener("click", function(){
         var info_window = windows[id];
         var marker = markers[id];
         info_window.open(map, marker);
         map.setZoom(14);
         map.setCenter(marker.getPosition());
-        card_ids.map((card_id) => {
-          console.log('check')
-          var card = document.getElementById(card_id);
+        cards.map((card, id) => {
+          var card = document.getElementById('search-result-' + id);
           if (card.classList.contains('bg-primary')) {
-            console.log('found')
             card.classList.remove('bg-primary');
             card.classList.add('bg-secondary');
           }
@@ -110,7 +107,8 @@ function renderSearchCard(place, id) {
     '      </div>'
     +
     '    </div';
-    // TODO: use append node instead of innerhtml hacking
-  document.getElementById('search-result-list').innerHTML = document.getElementById('search-result-list').innerHTML + " " + card;
-  return div_id;
+  var card_div = document.createElement('div');
+  card_div.innerHTML = card.trim();
+  document.getElementById('search-result-list').appendChild(card_div);
+  return card_div;
 }
