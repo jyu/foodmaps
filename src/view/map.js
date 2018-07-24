@@ -28,24 +28,37 @@ function initMap() {
         info_window.open(map, marker);
         map.setZoom(14);
         map.setCenter(marker.getPosition());
-        cards.map((card, id) => {
-          var card = document.getElementById('search-result-' + id);
-          if (card.classList.contains('bg-primary')) {
-            card.classList.remove('bg-primary');
-            card.classList.add('bg-secondary');
-          }
-        })
-        var card = document.getElementById('search-result-' + id);
-        card.classList.remove('bg-secondary');
-        card.classList.add('bg-primary');
+        focusCard(cards, id, windows, map);
       });
     })
-
+    markers.map((marker, id) => {
+      marker.addListener('click', function() {
+        focusCard(cards, id, windows, map);
+      })
+    })
     map.addListener('click', function() {
-      for (var i = 0; i < windows.length; i++) {
-        windows[i].close(map);
-      }
+      windows.map((info_window) => {
+        info_window.close(map);
+      })
     });
+  });
+}
+
+function focusCard(cards, id, windows, map) {
+  cards.map((card, id) => {
+    var card = document.getElementById('search-result-' + id);
+    if (card.classList.contains('bg-primary')) {
+      card.classList.remove('bg-primary');
+      card.classList.add('bg-secondary');
+    }
+  });
+  var card = document.getElementById('search-result-' + id);
+  card.classList.remove('bg-secondary');
+  card.classList.add('bg-primary');
+  windows.map((info_window, win_id) => {
+    if (win_id !== id) {
+      info_window.close(map);
+    }
   });
 }
 
