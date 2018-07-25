@@ -166,13 +166,23 @@ function renderSearchCard(place, id) {
   if (place['price'] !== "") {
     price = ', Price: ' + place['price'];
   }
+  var rating = ""
+  if (place['rating'] !== "") {
+    rating = place['rating'];
+  }
   var card = '<div id="' + div_id + '" class="search-result card text-white bg-secondary mb-3">'
     +
     '      <div class="card-body">'
     +
-    '        <h5 class="card-title">' + disp_id + '. ' + place['name'] + '</h5>'
+    '         <div class="info">'
     +
-    '        <p class="card-text">Featured on ' + place['series_name'] + price + '</p>'
+    '           <h5 class="card-title">' + disp_id + '. ' + place['name'] + '</h5>'
+    +
+    '           <div class="rating">' + rating + '</div>'
+    +
+    '        </div>'
+    +
+    '        <div class="card-text">Featured on ' + place['series_name'] + price + '</div>'
     +
     '        <p class="card-text">' + place['tags'] +'</p>'
     +

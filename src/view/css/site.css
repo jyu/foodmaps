@@ -36,8 +36,13 @@ html, body {
   padding: 0;
 }
 
+.card-title {
+  float: left;
+}
+
 .card-text {
   margin-bottom: 5px;
+  float: left;
 }
 
 .card-body {
@@ -46,4 +51,13 @@ html, body {
 
 .card {
   margin-bottom: 0px !important;
+}
+
+.info {
+  display: inline;
+}
+
+.rating {
+  margin-bottom: 5px;
+  float: right;
 }
