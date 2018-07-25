@@ -26,9 +26,8 @@ function initMap() {
         var info_window = windows[id];
         var marker = markers[id];
         info_window.open(map, marker);
-        map.setZoom(14);
-        map.setCenter(marker.getPosition());
         focusCard(cards, id, windows, map);
+        focusWindow(marker, map);
       });
     })
     markers.map((marker, id) => {
@@ -42,6 +41,31 @@ function initMap() {
       })
     });
   });
+}
+
+function focusWindow(marker, map) {
+  var marker_pos = marker.getPosition();
+  var bounds = map.getBounds();
+  // var small_bounds = map.getBounds();
+  // var boundDiff = 0.5
+  // var center_lng = (bounds.b.b + bounds.b.f) / 2;
+  // var center_lat = (bounds.f.b + bounds.f.f) / 2;
+  // console.log('center lng ', center_lng);
+  // console.log('center lat ', center_lat);
+  // small_bounds.b.b = (bounds.b.b + center_lng) / 2;
+  // small_bounds.b.f = (bounds.b.f + center_lng) / 2;
+  // small_bounds.f.b = (bounds.f.b + center_lat) / 2;
+  // small_bounds.f.f = (bounds.f.f + center_lat) / 2;
+  // console.log(small_bounds);
+  // console.log("large bounds", bounds.contains(marker_pos));
+  // console.log("small bounds", small_bounds.contains(marker_pos));
+
+  if (map.getZoom() !== 14 || !bounds.contains(marker_pos)) {
+    map.setCenter(marker_pos);
+  }
+  //  if (!small_bounds.contains(marker_pos) && bounds.contains(marker_pos)) {
+  // }
+  map.setZoom(14);
 }
 
 function focusCard(cards, id, windows, map) {
@@ -77,8 +101,7 @@ function renderPlace(place, map, id) {
 
   marker.addListener('click', function() {
     infowindow.open(map, marker);
-    map.setZoom(14);
-    map.setCenter(marker.getPosition());
+    focusWindow(marker, map);
   });
 
   return [infowindow, marker];
