@@ -11,6 +11,7 @@ function initMap() {
       zoom: 11,
     });
     var places = data['places'];
+    places = shuffle(places);
     var windows = [];
     var markers = [];
     var cards = [];
@@ -86,6 +87,14 @@ function focusCard(cards, id, windows, map) {
   });
 }
 
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 function renderPlace(place, map, id) {
   // Add info window
   var location = {lat: parseFloat(place['latitude']), lng: parseFloat(place['longitude'])};
@@ -130,13 +139,17 @@ function getInfoWindowContent(place) {
 function renderSearchCard(place, id) {
   var div_id = 'search-result-' + id;
   var disp_id = id + 1;
+  var price = ""
+  if (place['price'] !== "") {
+    price = ', Price: ' + place['price'];
+  }
   var card = '<div id="' + div_id + '" class="search-result card text-white bg-secondary mb-3">'
     +
     '      <div class="card-body">'
     +
     '        <h5 class="card-title">' + disp_id + '. ' + place['name'] + '</h5>'
     +
-    '        <p class="card-text">Featured on ' + place['series_name'] + ', Price: ' + place['price'] + '</p>'
+    '        <p class="card-text">Featured on ' + place['series_name'] + price + '</p>'
     +
     '        <p class="card-text">' + place['tags'] +'</p>'
     +
