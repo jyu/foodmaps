@@ -45,6 +45,7 @@ function initMap() {
 }
 
 function focusWindow(marker, map) {
+  map.setZoom(14);
   var marker_pos = marker.getPosition();
   var bounds = map.getBounds();
   var lng_across = (bounds.b.b - bounds.b.f);
@@ -70,7 +71,6 @@ function focusWindow(marker, map) {
   }
   //  if (!small_bounds.contains(marker_pos) && bounds.contains(marker_pos)) {
   // }
-  map.setZoom(14);
 }
 
 function focusCard(cards, id, windows, map) {
