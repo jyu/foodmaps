@@ -89,6 +89,7 @@ function focusCard(cards, id, windows, map) {
       info_window.close(map);
     }
   });
+  card.scrollIntoView();
 }
 
 function shuffle(a) {
