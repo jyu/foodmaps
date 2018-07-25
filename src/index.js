@@ -82,3 +82,33 @@ app.get('/getPlaces', function(req, res) {
     }
   });
 });
+
+app.post("/search", function(req, res) {
+  db.collection("places").find(
+      {
+          $text: { $search: req.body.name }
+      },
+      {
+          score: { $meta: "textScore" }
+      }
+  ).toArray(function(err, docs) {
+      // Sort docs by relevance
+      if (!docs) {
+          res.status(200).json({"docs": []});
+      } else {
+          docs.sort(textRelevancyScoreCompare);
+          res.status(200).json(docs);
+      }
+  });
+});
+
+// For comparing text scores
+function textRelevancyScoreCompare(a, b) {
+    if (a.score < b.score) {
+        return 1;
+    }
+    if (a.score > b.score) {
+        return -1;
+    }
+    return 0;
+}
