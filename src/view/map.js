@@ -47,6 +47,10 @@ function initMap() {
 function focusWindow(marker, map) {
   var marker_pos = marker.getPosition();
   var bounds = map.getBounds();
+  var lng_across = (bounds.b.b - bounds.b.f);
+  var lat_across = (bounds.f.b - bounds.f.f);
+  marker_pos = {lat: marker_pos.lat() - lat_across / 6, lng: marker_pos.lng()};
+
   // var small_bounds = map.getBounds();
   // var boundDiff = 0.5
   // var center_lng = (bounds.b.b + bounds.b.f) / 2;
