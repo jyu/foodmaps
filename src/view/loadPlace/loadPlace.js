@@ -8,7 +8,7 @@ document.getElementById("submit-button").addEventListener("click", function(){
          data: {
            'name': document.getElementById('name-info').innerHTML,
            'address': document.getElementById('address-info').innerHTML,
-           'rating': document.getElementById('name-info').innerHTML,
+           'rating': document.getElementById('rating-info').innerHTML,
            'phone': document.getElementById('phone-info').innerHTML,
            'url': document.getElementById('url-info').innerHTML,
            'latitude': document.getElementById('latitude-info').innerHTML,
