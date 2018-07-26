@@ -11,20 +11,38 @@ function initMap() {
   var cards = [];
   var search = document.getElementById('search-bar');
   var initialPlaces = [];
+  search.onkeypress = function(k) {
+    if (k.key === "Enter") {
+      search.value = "";
+    }
+  }
   search.oninput =  function(s) {
     var query = search.value;
     $.post({
       'url': '/search',
       'data': {"name": query}
     }).done(function(data) {
-      console.log(data);
-      console.log(query);
       if (data.length !== 0) {
         renderMap(data, map, windows, markers, cards);
+        var search_end = renderSearchEnd();
+        search_end.addEventListener("click", function() {
+          search.value = "";
+          renderMap(initialPlaces, map, windows, markers, cards);
+          document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
+        });
+        var button = document.getElementById('search-button')
+        button.innerHTML = '<i class="fas fa-times"></i>';
+        button.addEventListener("click", function() {
+          search.value = "";
+          renderMap(initialPlaces, map, windows, markers, cards);
+          document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
+        });
       }
       if (!query) {
+        document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
         renderMap(initialPlaces, map, windows, markers, cards);
       }
+
     })
   };
   $.get({
@@ -222,6 +240,22 @@ function renderSearchCard(place, id) {
     '        <p class="card-text">Featured on ' + place['series_name'] + price + '</p>'
     +
     '        <p class="card-text">' + place['tags'] +'</p>'
+    +
+    '      </div>'
+    +
+    '    </div';
+  var card_div = document.createElement('div');
+  card_div.innerHTML = card.trim();
+  document.getElementById('search-result-list').appendChild(card_div);
+  return card_div;
+}
+
+function renderSearchEnd() {
+  var card = '<div id="search-end" class="search-result card text-white bg-secondary mb-3">'
+    +
+    '      <div class="card-body">'
+    +
+    '        <h5 class="card-text center">Clear Search</h5>'
     +
     '      </div>'
     +
