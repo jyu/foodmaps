@@ -182,7 +182,7 @@ function renderSearchCard(place, id) {
     +
     '        </div>'
     +
-    '        <div class="card-text">Featured on ' + place['series_name'] + price + '</div>'
+    '        <p class="card-text">Featured on ' + place['series_name'] + price + '</p>'
     +
     '        <p class="card-text">' + place['tags'] +'</p>'
     +
