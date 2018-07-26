@@ -84,6 +84,7 @@ app.get('/getPlaces', function(req, res) {
 });
 
 app.post("/search", function(req, res) {
+  console.log(req.body.name);
   db.collection("places").find(
       {
           $text: { $search: req.body.name }

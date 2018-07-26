@@ -2,45 +2,82 @@
 // When the user clicks the marker, an info window opens.
 
 function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 34.0201613, lng: -118.2437},
+    zoom: 11,
+  });
+  var windows = [];
+  var markers = [];
+  var cards = [];
+  var search = document.getElementById('search-bar');
+  var initialPlaces = [];
+  search.oninput =  function(s) {
+    var query = search.value;
+    $.post({
+      'url': '/search',
+      'data': {"name": query}
+    }).done(function(data) {
+      console.log(data);
+      console.log(query);
+      if (data.length !== 0) {
+        renderMap(data, map, windows, markers, cards);
+      }
+      if (!query) {
+        renderMap(initialPlaces, map, windows, markers, cards);
+      }
+    })
+  };
   $.get({
     'url': '/getPlaces'
   }).done(function(data) {
     console.log(data);
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 34.0201613, lng: -118.2437},
-      zoom: 11,
-    });
     var places = data['places'];
     places = shuffle(places);
-    var windows = [];
-    var markers = [];
-    var cards = [];
-    for (var i = 0; i < places.length; i++) {
-      var place = places[i];
-      var info_window_and_marker = renderPlace(place, map, i+1);
-      windows.push(info_window_and_marker[0]);
-      markers.push(info_window_and_marker[1]);
-      cards.push(renderSearchCard(place, i))
-    }
-    cards.map((card, id) => {
-      card.addEventListener("click", function(){
-        var info_window = windows[id];
-        var marker = markers[id];
-        info_window.open(map, marker);
-        focusCard(cards, id, windows, map);
-        focusWindow(marker, map);
-      });
-    })
-    markers.map((marker, id) => {
-      marker.addListener('click', function() {
-        focusCard(cards, id, windows, map);
-      })
-    })
-    map.addListener('click', function() {
-      windows.map((info_window) => {
-        info_window.close(map);
-      })
+    initialPlaces = places;
+    renderMap(places, map, windows, markers, cards);
+  });
+}
+
+function clearMap(places, map, windows, markers, cards) {
+  markers.map((marker) => {
+    marker.setMap(null);
+  });
+  windows.map((info_window) => {
+    info_window.close(map);
+  });
+  document.getElementById('search-result-list').innerHTML = '';
+  windows = windows.splice(0, windows.length);
+  markers = markers.splice(0, markers.length);
+  cards = cards.splice(0, cards.length);
+}
+
+function renderMap(places, map, windows, markers, cards) {
+  clearMap(places, map, windows, markers, cards);
+  for (var i = 0; i < places.length; i++) {
+    var place = places[i];
+    var info_window_and_marker = renderPlace(place, map, i+1);
+    windows.push(info_window_and_marker[0]);
+    markers.push(info_window_and_marker[1]);
+    cards.push(renderSearchCard(place, i))
+  }
+  cards.map((card, id) => {
+    card.addEventListener("click", function(){
+      var info_window = windows[id];
+      var marker = markers[id];
+      info_window.open(map, marker);
+      focusCard(cards, id, windows, map);
+      focusWindow(marker, map);
     });
+  })
+  markers.map((marker, id) => {
+    marker.addListener('click', function() {
+      focusCard(cards, id, windows, map);
+    })
+  })
+  map.addListener('click', function() {
+    windows.map((info_window) => {
+      info_window.close(map);
+    })
   });
 }
 
