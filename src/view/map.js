@@ -52,7 +52,7 @@ function initMap() {
     initialPlaces = places;
     mapReset(null, places, map, windows, markers, cards);
   });
-  if (detectMob()) {
+  if (detectMobMessage()) {
     alert("Try horizontal on your phone. This website is best used on desktop. :)");
   };
 }
@@ -195,7 +195,11 @@ function focusCard(cards, id, windows, map) {
     var elementHeight = $element.height();
     var viewportHeight = $window.height();
     var scrollIt = elementTop - ((viewportHeight - elementHeight) / 2);
-    $("#nav-panel").animate({ scrollTop: scrollIt }, "fast");
+    $("#nav-panel").animate({ scrollTop: scrollIt }, "fast", function() {
+      if (!isElementInViewport(card)) {
+        card.scrollIntoView();
+      }
+    });
   }
 }
 function isElementInViewport (el) {
