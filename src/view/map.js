@@ -11,9 +11,12 @@ function initMap() {
   var cards = [];
   var search = document.getElementById('search-bar');
   var initialPlaces = [];
+  has_search_results = false; // Global State
   search.onkeypress = function(k) {
     if (k.key === "Enter") {
       search.value = "";
+      searchButtonOrEnterLogic(initialPlaces, map, windows, markers, cards);
+      addSearchButton(initialPlaces, map, windows, markers, cards);
     }
   }
   search.oninput =  function(s) {
@@ -23,24 +26,19 @@ function initMap() {
       'data': {"name": query}
     }).done(function(data) {
       if (data.length !== 0) {
+        has_search_results = true;
         renderMap(data, map, windows, markers, cards);
         var search_end = renderSearchEnd();
         search_end.addEventListener("click", function() {
-          search.value = "";
-          renderMap(initialPlaces, map, windows, markers, cards);
-          document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
+          mapReset(search, initialPlaces, map, windows, markers, cards);
         });
-        var button = document.getElementById('search-button')
-        button.innerHTML = '<i class="fas fa-times"></i>';
-        button.addEventListener("click", function() {
-          search.value = "";
-          renderMap(initialPlaces, map, windows, markers, cards);
-          document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
-        });
+        addClearButton(search, initialPlaces, map, windows, markers, cards);
+      } else {
+        has_search_results = false;
+        mapReset(null, initialPlaces, map, windows, markers, cards);
       }
       if (!query) {
-        document.getElementById('search-button').innerHTML = '<i class="fas fa-search"></i>';
-        renderMap(initialPlaces, map, windows, markers, cards);
+        mapReset(null, initialPlaces, map, windows, markers, cards);
       }
 
     })
@@ -51,11 +49,46 @@ function initMap() {
     var places = data['places'];
     places = shuffle(places);
     initialPlaces = places;
-    renderMap(places, map, windows, markers, cards);
+    mapReset(null, places, map, windows, markers, cards);
   });
   if (detectMob()) {
     alert("Try horizontal on your phone. This website is best used on desktop. :)");
   };
+}
+
+function mapReset(search, initialPlaces, map, windows, markers, cards) {
+  if (search !== null) {
+    search.value = "";
+  }
+  renderMap(initialPlaces, map, windows, markers, cards);
+  addSearchButton(initialPlaces, map, windows, markers, cards);
+}
+
+function addSearchButton(initialPlaces, map, windows, markers, cards) {
+  var old_button = document.getElementById('search-button');
+  var new_button = old_button.cloneNode(true);
+  old_button.parentNode.replaceChild(new_button, old_button);
+  new_button.innerHTML = '<i class="fas fa-search"></i>';
+  new_button.addEventListener("click", function() {
+    searchButtonOrEnterLogic(initialPlaces, map, windows, markers, cards);
+  });
+}
+
+function searchButtonOrEnterLogic(initialPlaces, map, windows, markers, cards) {
+  if (!has_search_results) {
+    mapReset(null, initialPlaces, map, windows, markers, cards);
+    renderNoSearchResults();
+  }
+}
+
+function addClearButton(search, initialPlaces, map, windows, markers, cards) {
+  var old_button = document.getElementById('search-button');
+  var new_button = old_button.cloneNode(true);
+  old_button.parentNode.replaceChild(new_button, old_button);
+  new_button.innerHTML = '<i class="fas fa-times"></i>';
+  new_button.addEventListener("click", function() {
+    mapReset(search, initialPlaces, map, windows, markers, cards);
+  });
 }
 
 function detectMob() {
@@ -280,5 +313,32 @@ function renderSearchEnd() {
   var card_div = document.createElement('div');
   card_div.innerHTML = card.trim();
   document.getElementById('search-result-list').appendChild(card_div);
+  return card_div;
+}
+
+function renderNoSearchResults() {
+  var no_search = document.getElementById('search-no-results');
+  if (no_search !== null) {
+    return;
+  }
+  var card = '<div id="search-no-results" class="search-result card text-white bg-secondary mb-3">'
+    +
+    '      <div class="card-body">'
+    +
+    '        <h5 class="card-text center">No Results Found</h5>'
+    +
+    '      </div>'
+    +
+    '    </div';
+  var card_div = document.createElement('div');
+  card_div.innerHTML = card.trim();
+
+  var list = document.getElementById('search-result-list');
+  var childNodes = list.childNodes;
+  var firstChild = null;
+  if (childNodes.length !== 0) {
+    firstChild = childNodes[0];
+  }
+  list.insertBefore(card_div, firstChild);
   return card_div;
 }
