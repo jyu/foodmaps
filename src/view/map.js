@@ -247,6 +247,7 @@ function renderPlace(place, map, id) {
 function getInfoWindowContent(place) {
   video_url = place['video_url'].replace("https://youtu.be/", "https://www.youtube.com/embed/");
   video_url = video_url.replace("t=", "start=");
+  video_url = video_url + "&autoplay=1";
   if (detectMob()) {
     height = "height=200";
     width = "width=400";
