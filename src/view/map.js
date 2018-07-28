@@ -92,8 +92,17 @@ function addClearButton(search, initialPlaces, map, windows, markers, cards) {
   });
 }
 
-function detectMob() {
+function detectMobMessage() {
    if(window.innerWidth <= 500) {
+     return true;
+   } else {
+     return false;
+   }
+}
+
+function detectMob() {
+   if(window.innerWidth <= 500 ||
+      window.innerHeight <= 500) {
      return true;
    } else {
      return false;
@@ -243,7 +252,15 @@ function renderPlace(place, map, id) {
   marker.addListener('click', function() {
     infowindow.open(map, marker);
     focusWindow(marker, map);
+    if (detectMob()) {
+      var iframe = $('#player');
+      var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
+      if (requestFullScreen) {
+        requestFullScreen.bind(iframe)();
+      }
+    }
   });
+
 
   return [infowindow, marker];
 }
@@ -261,7 +278,7 @@ function getInfoWindowContent(place) {
   }
   return '<div class="card">'
         +
-        '  <iframe ' + width + ' ' + height + ' src="' + video_url + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
+        '  <iframe id="player" ' + width + ' ' + height + ' src="' + video_url + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
         +
         '  <div class="card-header" style="display: inline">'
         +
