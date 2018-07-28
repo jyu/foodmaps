@@ -2,6 +2,7 @@
 // When the user clicks the marker, an info window opens.
 
 function initMap() {
+  $('#scroll-to-top').hide();
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.0201613, lng: -118.2437},
     zoom: 11,
@@ -188,7 +189,13 @@ function focusCard(cards, id, windows, map) {
     }
   });
   if (!isElementInViewport(card)) {
-    card.scrollIntoView();
+    var $window = $('#nav-panel');
+    var $element = $('#search-result-' + id);
+    var elementTop = $element.offset().top;
+    var elementHeight = $element.height();
+    var viewportHeight = $window.height();
+    var scrollIt = elementTop - ((viewportHeight - elementHeight) / 2);
+    $("#nav-panel").animate({ scrollTop: scrollIt }, "fast");
   }
 }
 function isElementInViewport (el) {
@@ -341,4 +348,17 @@ function renderNoSearchResults() {
   }
   list.insertBefore(card_div, firstChild);
   return card_div;
+}
+
+function scroll_handler() {
+  var search = document.getElementById('search-bar');
+  if (isElementInViewport(search)) {
+    $('#scroll-to-top').hide();
+  } else {
+    $('#scroll-to-top').show();
+  }
+}
+
+function scroll_top_top_handler()  {
+  $("#nav-panel").animate({ scrollTop: 0 }, "slow");
 }

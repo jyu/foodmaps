@@ -10,7 +10,7 @@
     <title>Food Maps</title>
 </head>
 <body>
-  <div id="nav-panel">
+  <div id="nav-panel" onscroll="scroll_handler()">
     <div id="header">
       <img id="logo" src="/img/logo.png"/>
     </div>
@@ -25,6 +25,11 @@
         </div>
     </div>
     <div id="search-result-list">
+    </div>
+    <div id="scroll-to-top" class="search-result card text-white bg-secondary mb-3">
+      <div class="card-body">
+        <h5 class="card-text center" onclick="scroll_top_top_handler()">Scroll to Top</h5>
+      </div>
     </div>
   </div>
   <div id="map"></div>

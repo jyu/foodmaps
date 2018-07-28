@@ -108,3 +108,10 @@ html, body {
 #header {
   padding: 0px;
 }
+
+#scroll-to-top {
+  background-color: #393E46 !important;
+  position: fixed;
+  width: 25%;
+  bottom: 0;
+}
