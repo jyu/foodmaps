@@ -99,3 +99,12 @@ html, body {
 .center {
   text-align: center;
 }
+
+#logo {
+  margin: 0px;
+  width: 100%;
+}
+
+#header {
+  padding: 0px;
+}
