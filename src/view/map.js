@@ -48,12 +48,22 @@ function initMap() {
   $.get({
     'url': '/getPlaces'
   }).done(function(data) {
-    console.log(data);
     var places = data['places'];
     places = shuffle(places);
     initialPlaces = places;
     renderMap(places, map, windows, markers, cards);
   });
+  if (detectMob()) {
+    alert("Try horizontal on your phone. This website is best used on desktop. :)");
+  };
+}
+
+function detectMob() {
+   if(window.innerWidth <= 500) {
+     return true;
+   } else {
+     return false;
+   }
 }
 
 function clearMap(places, map, windows, markers, cards) {
@@ -197,9 +207,16 @@ function renderPlace(place, map, id) {
 function getInfoWindowContent(place) {
   video_url = place['video_url'].replace("https://youtu.be/", "https://www.youtube.com/embed/");
   video_url = video_url.replace("t=", "start=");
+  if (detectMob) {
+    height = "height=200";
+    width = "width=400";
+  } else {
+    height = 'height="315"'
+    width = 'width="560"';
+  }
   return '<div class="card">'
         +
-        '  <iframe width="560" height="315" src="' + video_url + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
+        '  <iframe ' + width + ' ' + height + ' src="' + video_url + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
         +
         '  <div class="card-header" style="display: inline">'
         +
