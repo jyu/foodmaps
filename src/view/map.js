@@ -309,6 +309,12 @@ function renderSearchCard(place, id) {
   if (place['rating'] !== "") {
     rating = place['rating'];
   }
+  var location = ""
+  if (place['address'].includes("Los Angeles")) {
+    location = " (LA)";
+  } else if (place['address'].includes("New York")){
+    location = " (NYC)";
+  }
   var card = '<div id="' + div_id + '" class="search-result card text-white bg-secondary mb-3">'
     +
     '      <div class="card-body">'
@@ -323,7 +329,7 @@ function renderSearchCard(place, id) {
     +
     '        <p class="card-text">Featured on ' + place['series_name'] + price + '</p>'
     +
-    '        <p class="card-text">' + place['tags'] +'</p>'
+    '        <p class="card-text">' + place['tags'] + location + '</p>'
     +
     '      </div>'
     +
