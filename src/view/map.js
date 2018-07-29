@@ -150,6 +150,7 @@ function renderMap(places, map, windows, markers, cards) {
       info_window.close(map);
     })
   });
+  renderSearchEndFiller();
 }
 
 function focusWindow(marker, map) {
@@ -334,11 +335,28 @@ function renderSearchCard(place, id) {
 }
 
 function renderSearchEnd() {
+  $('#search-end').remove();
   var card = '<div id="search-end" class="search-result card text-white bg-secondary mb-3">'
     +
     '      <div class="card-body">'
     +
     '        <h5 class="card-text center">Clear Search</h5>'
+    +
+    '      </div>'
+    +
+    '    </div';
+  var card_div = document.createElement('div');
+  card_div.innerHTML = card.trim();
+  document.getElementById('search-result-list').appendChild(card_div);
+  return card_div;
+}
+
+function renderSearchEndFiller() {
+  var card = '<div id="search-end" class="search-result card text-white bg-secondary mb-3">'
+    +
+    '      <div class="card-body">'
+    +
+    '        <h5 class="card-text center">End of Search</h5>'
     +
     '      </div>'
     +
