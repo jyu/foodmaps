@@ -52,9 +52,6 @@ function initMap() {
     initialPlaces = places;
     mapReset(null, places, map, windows, markers, cards);
   });
-  if (detectMobMessage()) {
-    alert("Try horizontal on your phone. This website is best used on desktop. :)");
-  };
 }
 
 function mapReset(search, initialPlaces, map, windows, markers, cards) {
