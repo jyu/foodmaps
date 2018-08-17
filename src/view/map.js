@@ -251,10 +251,10 @@ function renderPlace(place, map, id) {
     infowindow.open(map, marker);
     focusWindow(marker, map);
     if (detectMob()) {
-      var iframe = $('#player');
+      var iframe = document.getElementById("player");
       var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
       if (requestFullScreen) {
-        requestFullScreen.bind(iframe)();
+        requestFullScreen();
       }
     }
   });
